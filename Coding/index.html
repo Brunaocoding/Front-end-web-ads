@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<!-- 
+  Essa primeira linha diz ao navegador: "isso é um documento HTML5".
+  Todo arquivo .html deveria começar assim.
+-->
+<html lang="pt-BR">
+<!-- 
+  A tag <html> é a "caixa" que contém TUDO da página.
+  lang="pt-BR" avisa o navegador (e leitores de tela) que o conteúdo está em português do Brasil.
+-->
+
+<head>
+  <!-- 
+    O <head> guarda informações SOBRE a página (metadados),
+    coisas que o usuário não vê diretamente na tela, mas que são importantes:
+    título da aba, codificação de caracteres, estilo (CSS), etc.
+  -->
+  <meta charset="UTF-8">
+  <!-- charset UTF-8 garante que acentos e "ç" apareçam certinho -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- essa linha faz o site se ajustar bem em celulares -->
+
+  <title>Como configurar uma tag NFC</title>
+  <!-- título que aparece na aba do navegador -->
+
+  <style>
+    /* 
+      Tudo dentro de <style> é CSS: a linguagem que cuida da APARÊNCIA.
+      HTML = estrutura/conteúdo. CSS = visual.
+    */
+
+    :root {
+      /* :root guarda "variáveis" de cor que usamos várias vezes */
+      --bg: #10131f;
+      --bg-soft: #171b2c;
+      --accent: #4ecdc4;
+      --text: #eef1f7;
+      --text-dim: #9aa3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      /* isso evita dor de cabeça com tamanhos de caixas somando errado */
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      /* isso cria os "anéis" de sinal NFC atrás do título, só decoração */
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(78,205,196,0.15) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    header h1, header p {
+      position: relative;
+      z-index: 1;
+    }
+
+    header .eyebrow {
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      margin: 0.6rem 0;
+    }
+
+    header p {
+      color: var(--text-dim);
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 4rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      color: var(--accent);
+      font-size: 1.3rem;
+      border-bottom: 1px solid #2a3050;
+      padding-bottom: 0.5rem;
+    }
+
+    .passo {
+      background: var(--bg-soft);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .passo strong {
+      color: var(--accent);
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      padding: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <p class="eyebrow">Tutorial passo a passo</p>
+    <h1>Como configurar uma tag NFC</h1>
+    <p>Aprenda a gravar e programar uma etiqueta NFC do zero, usando só o seu celular.</p>
+  </header>
+
+  <main>
+    <!-- 
+      O <main> marca o conteúdo PRINCIPAL da página.
+      Cada <section> é um bloco de assunto separado.
+    -->
+
+    <section id="o-que-e">
+      <h2>O que é uma tag NFC?</h2>
+      <p>
+        NFC (Near Field Communication) é uma tecnologia de comunicação por
+        aproximação. Uma "tag" NFC é um adesivo ou cartão pequeno com um
+        chip que consegue guardar informações, como um link, um texto ou
+        um comando para o celular.
+      </p>
+    </section>
+
+    <section id="materiais">
+      <h2>O que você vai precisar</h2>
+      <ul>
+        <li>Um celular com NFC (a maioria dos Android e iPhone a partir do 7)</li>
+        <li>Uma ou mais tags NFC em branco (fáceis de achar online)</li>
+        <li>Um aplicativo gravador de NFC, como o "NFC Tools"</li>
+      </ul>
+    </section>
+
+    <section id="passo-a-passo">
+      <h2>Passo a passo</h2>
+
+      <div class="passo">
+        <strong>1. Ative o NFC do celular.</strong>
+        Vá em Configurações → Conexões (ou Wi-Fi e redes) → ative a opção NFC.
+      </div>
+
+      <div class="passo">
+        <strong>2. Instale um app gravador.</strong>
+        Baixe o "NFC Tools" na loja de aplicativos do seu celular.
+      </div>
+
+      <div class="passo">
+        <strong>3. Abra o app e toque em "Escrever".</strong>
+        Escolha o tipo de conteúdo: link, texto, Wi-Fi, contato, etc.
+      </div>
+
+      <div class="passo">
+        <strong>4. Encoste o celular na tag NFC.</strong>
+        Aproxime a parte de trás do celular da etiqueta até aparecer a
+        confirmação de gravação.
+      </div>
+
+      <div class="passo">
+        <strong>5. Teste a tag.</strong>
+        Encoste o celular novamente na tag (fora do app de gravação) para
+        conferir se a ação configurada é executada.
+      </div>
+    </section>
+
+    <section id="dicas">
+      <h2>Dicas rápidas</h2>
+      <ul>
+        <li>Tags mais baratas (NTAG213) guardam menos dados que as NTAG215/216</li>
+        <li>Evite colar a tag sobre metal, isso pode atrapalhar o sinal</li>
+        <li>Você pode bloquear a tag depois de gravada, para impedir reescrita</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    Feito com HTML e CSS, do zero 💛
+  </footer>
+
+</body>
+</html>
