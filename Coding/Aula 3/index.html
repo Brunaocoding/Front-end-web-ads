@@ -1,10 +1,115 @@
 <!DOCTYPE html>
-<html lang="pt-br"
- <head>
-    <title>recrutamento online</title>
-    <meta charset="UTF-8"
- </head>
- <body>
+<html lang="pt-br">
+<head>
+    <title>Recrutamento Online</title>
+    <meta charset="UTF-8">
+    <style>
+        body{
+            background-color: rgb(87, 80, 80);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Recrutamento Online</h1>
+    </header>
 
- </body>
+    <main>
+        <section>
+            <h2>Cadestre seu Curriculo</h2>
+            <p>Preencha o Formulário  para se candidatar à vaga</p>
+            <fieldset>
+                <legend>Dados Pessoias</legend>
+                <div>
+                    <label for="nome_id">Nome Completo</label>
+                    <input id="nome_id" name="nome" type="text">
+                </div>
+
+                <div>
+                    <label for="telefone_id">Telefone</label>
+                    <input id="telefone_id" name="Telefono" type="tel">
+                </div>
+
+                <div>
+                    <label for="email_id">E-mail</label>
+                    <input id="email_id" name="E-mail" type="email">
+                </div>
+               </fieldset>
+                  <fieldset>
+                     <legend>Endereço</legend>
+                <div>
+                    <label for="logradouro_id">Logradouro</label>
+                    <input id="logradouro_id" name="Logradouro" type="text">
+                </div>
+
+                <div>
+                    <label for="cidade_id">cidade-uf</label>
+                    <input id="cidade_id" name="cidade" type="text">
+                </div>
+
+                   <div>
+                    <label for="numero_id">numero</label>
+                    <input id="numero_id" name="numero" type="number">
+                </div>
+
+            </fieldset>
+              <fieldset>  
+               <legend>Biografia</legend>
+                  <div>
+                     <label for="resumo_id">Fala sobre você</label>
+                     <textarea id="resumo_id" 
+                               name="resumo" 
+                               rows="4"
+                               ols="50"></textarea>
+                  </div>
+              </fieldset>
+              <legend>Nivel pretendido</legend>
+              <div>
+               <input id="estagiario_id"
+                      name="nivel"
+                      type="radio"
+                      value="estagiario">
+               <label for="estagiario_id">Estagiário</label>
+              </div>
+                        <div>
+               <input id="junior_id"
+                      name="nivel"
+                      type="radio"
+                      value="junior">
+               <label for="junior_id">Júnior</label>
+              </div>
+                  <div>
+                     <label for="experiencia_id">Experiência</label>
+                     <input id="experiencia_id" name="experiencia" type="text">
+                  </div>
+   
+                  <div>
+                     <label for="idiomas_id">Idiomas</label>
+                     <input id="idiomas_id" name="idiomas" type="text">
+                  </div> 
+               </fieldset>
+                  </fieldset>
+                  <legend>Tecnologias</legend> 
+                  <div>
+                     <input id="html_id"
+                            name="tecnologias"
+                            type="checkbox"
+                            value="html">
+                     <label for="html_id">HTML</label>
+                  </div>
+                  <div>
+                     <input id="css_id"
+                            name="tecnologias"
+                            type="checkbox"
+                            value="css">
+                     <label for="css_id">CSS</label>
+                  </div>   
+                  <input id="js_id"
+                            name="tecnologias"
+                            type="checkbox"
+                            value="js">
+                     <label for="js_id">JavaScript</label>
+        </section>
+    </main>
+</body>
 </html>
