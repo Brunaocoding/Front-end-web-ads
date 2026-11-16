@@ -1,0 +1,211 @@
+const API_URL = "https://postman-echo.com/post";
+
+const form = document.getElementById("formCadastro");
+const btnEnviar = document.getElementById("btnEnviar");
+
+function apenasDigitos(valor) {
+  return valor.replace(/\D/g, "");
+}
+
+function mascaraCPF(valor) {
+  return apenasDigitos(valor)
+    .slice(0, 11)
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
+
+function mascaraTelefone(valor) {
+  const d = apenasDigitos(valor).slice(0, 11);
+  if (d.length <= 10) {
+    return d
+      .replace(/(\d{2})(\d)/, "($1) $2")
+      .replace(/(\d{4})(\d)/, "$1-$2");
+  }
+  return d
+    .replace(/(\d{2})(\d)/, "($1) $2")
+    .replace(/(\d{5})(\d)/, "$1-$2");
+}
+
+function mascaraCEP(valor) {
+  return apenasDigitos(valor)
+    .slice(0, 8)
+    .replace(/(\d{5})(\d)/, "$1-$2");
+}
+
+document.getElementById("cpf").addEventListener("input", (e) => {
+  e.target.value = mascaraCPF(e.target.value);
+});
+document.getElementById("telefone").addEventListener("input", (e) => {
+  e.target.value = mascaraTelefone(e.target.value);
+});
+document.getElementById("cep").addEventListener("input", (e) => {
+  e.target.value = mascaraCEP(e.target.value);
+});
+
+function validarCPF(cpf) {
+  cpf = apenasDigitos(cpf);
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+
+  let soma = 0;
+  for (let i = 0; i < 9; i++) soma += parseInt(cpf[i]) * (10 - i);
+  let resto = (soma * 10) % 11;
+  if (resto === 10) resto = 0;
+  if (resto !== parseInt(cpf[9])) return false;
+
+  soma = 0;
+  for (let i = 0; i < 10; i++) soma += parseInt(cpf[i]) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10) resto = 0;
+  return resto === parseInt(cpf[10]);
+}
+
+function validarEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+function calcularIdade(dataStr) {
+  const hoje = new Date();
+  const nasc = new Date(dataStr + "T00:00:00");
+  let idade = hoje.getFullYear() - nasc.getFullYear();
+  const m = hoje.getMonth() - nasc.getMonth();
+  if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+  return idade;
+}
+
+const regras = {
+  nome: (v) => {
+    const t = v.trim();
+    if (!t) return "Informe seu nome completo.";
+    if (t.split(/\s+/).length < 2) return "Digite nome e sobrenome.";
+    if (t.length < 5) return "Nome muito curto.";
+    return "";
+  },
+  email: (v) => {
+    if (!v.trim()) return "Informe seu e-mail.";
+    if (!validarEmail(v.trim())) return "E-mail inválido.";
+    return "";
+  },
+  cpf: (v) => {
+    if (!v.trim()) return "Informe seu CPF.";
+    if (!validarCPF(v)) return "CPF inválido.";
+    return "";
+  },
+  telefone: (v) => {
+    const d = apenasDigitos(v);
+    if (!d) return "Informe seu telefone.";
+    if (d.length < 10 || d.length > 11) return "Telefone inválido.";
+    if (d.length === 11 && d[2] !== "9") return "Celular deve começar com 9 após o DDD.";
+    return "";
+  },
+  nascimento: (v) => {
+    if (!v) return "Informe sua data de nascimento.";
+    const idade = calcularIdade(v);
+    if (isNaN(idade) || new Date(v) > new Date()) return "Data inválida.";
+    if (idade < 18) return "É preciso ter 18 anos ou mais.";
+    if (idade > 120) return "Data inválida.";
+    return "";
+  },
+  cep: (v) => {
+    if (!v.trim()) return "Informe seu CEP.";
+    if (apenasDigitos(v).length !== 8) return "CEP deve ter 8 dígitos.";
+    return "";
+  },
+  endereco: (v) => {
+    if (!v.trim()) return "Informe seu endereço.";
+    if (v.trim().length < 5) return "Endereço muito curto.";
+    return "";
+  },
+  cidade: (v) => {
+    if (!v.trim()) return "Informe sua cidade.";
+    if (v.trim().length < 2) return "Cidade inválida.";
+    return "";
+  },
+  estado: (v) => (!v ? "Selecione um estado." : ""),
+  senha: (v) => {
+    if (!v) return "Crie uma senha.";
+    if (v.length < 8) return "A senha precisa ter ao menos 8 caracteres.";
+    if (!/[A-Za-z]/.test(v) || !/\d/.test(v)) return "Use letras e números.";
+    return "";
+  },
+  confirmarSenha: (v) => {
+    if (!v) return "Confirme sua senha.";
+    if (v !== document.getElementById("senha").value) return "As senhas não conferem.";
+    return "";
+  },
+  termos: () => (!document.getElementById("termos").checked ? "Você precisa aceitar os termos." : ""),
+};
+
+function mostrarErro(id, mensagem) {
+  const input = document.getElementById(id);
+  const campo = input.closest(".campo");
+  document.getElementById("erro-" + id).textContent = mensagem;
+  campo.classList.toggle("invalido", !!mensagem);
+  campo.classList.toggle("valido", !mensagem);
+}
+
+function validarCampo(id) {
+  const el = document.getElementById(id);
+  const mensagem = regras[id](el.value);
+  mostrarErro(id, mensagem);
+  return !mensagem;
+}
+
+Object.keys(regras).forEach((id) => {
+  const el = document.getElementById(id);
+  const evento = el.type === "checkbox" || el.tagName === "SELECT" ? "change" : "input";
+  el.addEventListener(evento, () => {
+    if (el.closest(".campo").classList.contains("invalido")) validarCampo(id);
+  });
+});
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const resultados = Object.keys(regras).map((id) => validarCampo(id));
+  const tudoValido = resultados.every(Boolean);
+
+  if (!tudoValido) {
+    const primeiroInvalido = form.querySelector(".invalido input, .invalido select");
+    if (primeiroInvalido) primeiroInvalido.focus();
+    return;
+  }
+
+  const dados = {
+    nome: document.getElementById("nome").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    cpf: document.getElementById("cpf").value,
+    telefone: document.getElementById("telefone").value,
+    nascimento: document.getElementById("nascimento").value,
+    cep: document.getElementById("cep").value,
+    endereco: document.getElementById("endereco").value.trim(),
+    cidade: document.getElementById("cidade").value.trim(),
+    estado: document.getElementById("estado").value,
+    senha: document.getElementById("senha").value,
+    termos: document.getElementById("termos").checked,
+  };
+
+  btnEnviar.disabled = true;
+  btnEnviar.textContent = "Enviando...";
+
+  try {
+    const resposta = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
+
+    if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
+
+    const retorno = await resposta.json();
+    alert("Cadastro enviado com sucesso!\n\nRetorno da API:\n" + JSON.stringify(retorno, null, 2));
+
+    form.reset();
+    document.querySelectorAll(".campo").forEach((c) => c.classList.remove("valido", "invalido"));
+  } catch (erro) {
+    alert("Não foi possível enviar o cadastro.\n" + erro.message);
+  } finally {
+    btnEnviar.disabled = false;
+    btnEnviar.textContent = "Cadastrar";
+  }
+});
